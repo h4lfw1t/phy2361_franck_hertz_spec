@@ -1,0 +1,89 @@
+%! Author = grays
+%! Date = 3/30/2026
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mhchem}
+\usepackage{siunitx}
+\usepackage{xcolor}
+% Listings settings
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{gray!10},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{gray!50},
+    title=\lstname
+}
+\sisetup{separate-uncertainty=true}
+\DeclareSIUnit\angstrom{\text {Å}}
+
+\title{Spectroscopy}
+\date{April 3, 2026}
+\author{
+    Patrick Geraghty (300349204) \\
+    Evan Champagne (300443446)
+}
+
+% Document
+\begin{document}
+\maketitle
+
+    \section{Introduction}\label{sec:introduction}
+
+    \section{Methods}\label{sec:methods}
+
+    \section{Raw Data}\label{sec:data}
+
+    \begin{table}[h!]
+        \centering
+        \caption{Spectral Emission Observations for Various Gases}
+        \label{tab:spectral_observations}
+        \begin{tabular}{lccc}
+        \hline
+        \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Spectral Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
+        Sodium & 295.0 & Doublet (Na) & 313.66 \\ \hline
+        Hydrogen & 295.0 & Magenta & 293.0 \\
+         & & Blue & 277.5 \\
+         & & Cyan & 276.6 \\
+         & & Red & 269.0 \\ \hline
+        Helium & 295.0 & Purple & 277.0 \\
+         & & Cyan & 276.0 \\
+         & & Green & 275.3 \\
+         & & Yellow & 275.0 \\
+         & & Orange & 271.6 \\
+         & & Red & 268.6 \\ \hline
+        Nitrogen & 295.0 & Distinct & 293.0 \\
+         & & Blue lines (max) & 278.6 \\
+         & & Blue lines (min) & 276.0 \\ \hline
+        Unknown E & 295.0 & Blue 1 \& 2 & 277.6 \\
+         & & Blue 3 & 277.3 \\
+         & & Blue 4 \& 5 & 277.0 \\
+         & & Green & 273.0 \\
+         & & Orange & 271.6 \\
+         & & Red & 269.0 \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \section{Analysis and Results}\label{sec:analysis}
+
+    \section{Discussion}\label{sec:discussion}
+
+    \section{Conclusion}\label{sec:conclusion}
+
+\end{document}
