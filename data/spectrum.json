@@ -1,0 +1,55 @@
+{
+  "experimental_parameters": {
+    "diffraction_grating_lines_per_mm": 600,
+    "measurement_uncertainty_degrees": 0.165
+  },
+  "observations": {
+    "Sodium": {
+      "starting_angle": 295.0,
+      "calibration_notes": "(1/600000) * sin(18.66) = 533 nm",
+      "lines": [
+        {"color": "Doublet (Na)", "angle": 313.66}
+      ]
+    },
+    "Hydrogen": {
+      "starting_angle": 295.0,
+      "lines": [
+        {"color": "Magenta", "angle": 293.0},
+        {"color": "Blue", "angle": 277.5},
+        {"color": "Cyan", "angle": 276.6},
+        {"color": "Red", "angle": 269.0}
+      ]
+    },
+    "Helium": {
+      "starting_angle": 295.0,
+      "lines": [
+        {"color": "Purple", "angle": 277.0},
+        {"color": "Cyan", "angle": 276.0},
+        {"color": "Green", "angle": 275.3},
+        {"color": "Yellow", "angle": 275.0},
+        {"color": "Orange", "angle": 271.6},
+        {"color": "Red", "angle": 268.6}
+      ]
+    },
+    "Nitrogen": {
+      "starting_angle": 295.0,
+      "lines": [
+        {"color": "Distinct", "angle": 293.0},
+        {"color": "Blue lines (max)", "angle": 278.6},
+        {"color": "Blue lines (min)", "angle": 276.0}
+      ],
+      "notes": "Below 276 degrees: Broader bands appear with wider slit width, faint separation between bands. This is characteristic of a molecular gas which can have rotational and vibrational internal motion, creating a continuous-looking spectrum."
+    },
+    "Unknown_E": {
+      "starting_angle": 295.0,
+      "lines": [
+        {"color": "Blue 1 & 2", "angle": 277.6, "notes": "Measurement not fine enough to separate"},
+        {"color": "Blue 3", "angle": 277.3},
+        {"color": "Blue 4 & 5", "angle": 277.0, "notes": "Measurement not fine enough to separate"},
+        {"color": "Green", "angle": 273.0},
+        {"color": "Orange", "angle": 271.6},
+        {"color": "Red", "angle": 269.0}
+      ]
+    }
+  }
+}
