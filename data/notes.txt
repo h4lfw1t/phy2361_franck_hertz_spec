@@ -1,0 +1,38 @@
+Diffraction grating: 600 lines/mm
+Measurement uncertainty: 0.33/2 degrees
+
+Sodium
+Starting angle: 295 degrees
+Doublet Angle (Na): 313.66 degrees
+Calibration: (1/600000) sin(18.66) = 533 nm
+
+Hydrogen
+Starting angle: 295 degrees
+Magenta line: 293 degrees
+Blue line: 277.5 degrees
+Cyan line: 276.6 degrees
+Red line: 269 degrees
+
+Helium
+Starting angle: 295 degrees
+Purple line: 277 degrees
+Cyan line: 276 degrees
+Green line: 275.3 degrees
+Yellow line: 275 degrees
+Orange line:271.6 degrees
+Red line: 268.6 degrees
+
+Nitrogen
+Starting angle: 295 degrees
+Distinct lines: 293 degrees
+Blue lines: 278.6-276
+Below 276: Broader bands appear with wider slit width, faint separation between bands
+
+Unknown (E) - Krypton:
+Starting angle: 295 degrees
+Blue 1 & 2: 277.6 degrees (measurement not fine enough)
+Blue 3: 277.3 degrees
+Blue 4 & 5: 277 degrees (measurement not fine enough)
+Green: 273 degrees
+Orange: 271.6 degrees
+Red: 269 degrees

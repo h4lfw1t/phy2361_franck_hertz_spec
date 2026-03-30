@@ -1,0 +1,160 @@
+%! Author = grays
+%! Date = 3/19/2026
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mhchem}
+\usepackage{xcolor}
+% Listings settings
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{gray!10},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{gray!50},
+    title=\lstname
+}
+
+% Document
+\begin{document}
+
+    \section*{Frank-Hertz Experiment}
+
+        The Frank-Hertz experiment is a fundamental experiment in quantum
+    mechanics that demonstrates the quantized nature of energy levels in
+    atoms.
+    In this experiment, electrons are accelerated through a gas (usually
+    mercury vapor) and collide with the atoms in the gas.
+    As the electrons collide with the atoms, they can transfer energy to
+    the atoms, causing them to become excited.
+    The potential difference applied to the electrons is varied, and the
+    resulting current is measured.
+
+    The following code graphs the electrostatic potential along the axis
+    between the three electrodes in the Frank-Hertz experiment, and the
+    kinetic energy of a collision where the electron loses 3 eV of kinetic
+    energy.
+
+    \lstinputlisting[language=Python,caption={Frank-Hertz potential and collision-energy sketch},label={lst:frank-hertz-potential}]{../src/hertz_prelab.py}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{../out/hertz_potential_prelab}
+        \caption{Electrostatic potential along the axis between the three
+            electrodes for a cathode at V = -10 V with respect to a grounded
+            anode, and a collector at V = -1.5 V\@.
+        }
+        \label{fig:frank-hertz-potential}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{../out/hertz_energy_prelab}
+        \caption{Kinetic energy of a collision where the electron loses 3 eV
+            of kinetic energy for a cathode at V = -10 V with respect to a
+            grounded anode, and a collector at V = -1.5 V\@.
+        }
+        \label{fig:frank-hertz-collision-energy}
+    \end{figure}
+
+    \section*{Spectroscopy}
+
+    Spectroscopy is the study of the interaction between matter and
+    electromagnetic radiation.
+    In this case, we are looking at light spectroscopy, which involves
+    analyzing the light emitted or absorbed by atoms and molecules.
+    There are two main types of spectroscopy: emission spectroscopy and
+    absorption spectroscopy.
+    In emission spectroscopy, we analyze the light emitted by excited atoms or
+    molecules as they return to lower energy states.
+    In absorption spectroscopy, we analyze the light absorbed by atoms or
+    molecules as they transition to higher energy states.
+    A spectroscope receives light through a slit (usually adjustable) and
+    reflects it through a series of mirrors and lenses to collimate the light.
+    The collimated light then passes through a diffraction grating, which
+    disperses the light into its component wavelengths.
+    The dispersed light is then focused onto an observation screen (for a
+    spectroscope) or a detector (for a spectrograph).
+    The specific wavelength range of the observable spectrum depends on the
+    length of the dispersion path, the curvature of the mirrors, and the
+    properties of the diffraction grating.
+    Typically, a spectroscope will have multiple gratings to allow for
+    different wavelength ranges and resolutions.
+    The resulting spectrum can be analyzed to determine the composition of the
+    light source, identify elements present, and study various physical
+    properties of the emitting or absorbing material.
+
+    \subsection*{Diffraction Grating Equation}
+
+    When light passes through the diffraction grating, it is dispersed into its component wavelengths and creates an interference pattern. The angles at which the light is diffracted can be described by the diffraction grating equation:
+    \[
+        m\lambda = d \sin(\theta)
+    \]
+    Where:
+    \begin{itemize}
+        \item \( m \) is the order of the diffraction (an integer, where \( m = 0, \pm 1, \pm 2, ... \))
+        \item \( lambda \) is the wavelength of the light
+        \item \( d \) is the distance between adjacent slits in the diffraction grating (grating spacing)
+        \item \( \theta \) is the angle at which the light is diffracted
+    \end{itemize}
+
+    By measuring the angle $\theta$ for a known order $m$ and grating spacing $d$, we can precisely calculate the emission wavelengths of the light source. However, typically a spectroscope is calibrated using known emission lines from a reference source (like a mercury lamp) to ensure accurate wavelength measurements.
+
+    \subsection*{Rydberg Formula}
+
+    The Rydberg formula predicts the wavelengths of light emitted (or
+    absorbed) by electron transitions in a hydrogen atom.
+    Because energy levels in an atom are quantized, an electron dropping to a
+    lower energy state emits a photon with a specific energy and wavelength.
+
+    \[
+        \frac{1}{\lambda} = R \left( \frac{1}{n_1^2} - \frac{1}{n_2^2} \right)
+    \]
+
+    Where:
+    \begin{itemize}
+        \item \( \lambda \) is the wavelength of the emitted or absorbed light
+        \item \( R \) is the Rydberg constant (approximately
+            \( 1.097 \times 10^7 \, \text{m}^{-1} \))
+        \item \( n_1 \) and \( n_2 \) are the principal quantum numbers of the
+            lower and higher energy levels, respectively (with \( n_2 > n_1 \))
+    \end{itemize}
+
+    \subsection*{Spectrum of a Molecular Gas}
+
+    While single atoms produce distinct, isolated spectral lines due to
+    electron transitions, molecular gases operate differently.
+    A diatomic molecule like \ce{N2} has additional degrees of freedom: it can
+    vibrate along its bond and rotate around its center of mass.
+    Both vibrational and rotational energy states are quantized, but the
+    energy gaps are much smaller than electronic transitions.
+    As a result, an electronic transition in a molecule is accompanied by
+    numerous simultaneous vibrational and rotational transitions, creating a
+    tightly packed cluster of emission lines known as a band spectrum.
+
+    As the simplest of the gases, the line spectrum of hydrogen should consist
+    of a few widely separated, sharp, and distinct lines in the visible range
+    (the Balmer series).
+    Helium is also a monatomic gas, but its two electrons introduce
+    electron-electron interactions and a more complex set of energy levels,
+    resulting in a spectrum with significantly more lines than hydrogen.
+    Finally, the diatomic nitrogen molecule will not produce sharp lines but
+    rather broad bands due to the combined electronic, vibrational, and
+    rotational transitions.
+
+\end{document}
