@@ -13,6 +13,8 @@
 \usepackage{mhchem}
 \usepackage{siunitx}
 \usepackage{xcolor}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 % Listings settings
 \lstset{
     basicstyle=\ttfamily\footnotesize,
@@ -32,6 +34,8 @@
 }
 \sisetup{separate-uncertainty=true}
 \DeclareSIUnit\angstrom{\text {Å}}
+
+\addbibresource{references.bib}
 
 \title{Spectroscopy}
 \date{April 3, 2026}
@@ -83,7 +87,11 @@
     \section{Analysis and Results}\label{sec:analysis}
 
     \section{Discussion}\label{sec:discussion}
+        Comparing the observed spectral lines to known emission
+        spectra~\cite{nist_helium}
 
     \section{Conclusion}\label{sec:conclusion}
+
+    \printbibliography
 
 \end{document}

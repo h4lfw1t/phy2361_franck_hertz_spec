@@ -1,0 +1,1 @@
+Hertz Vpp: 39.0 Hertz Vf: 6.6
