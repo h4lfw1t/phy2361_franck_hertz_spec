@@ -2,21 +2,42 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+from typing import Any, Sequence
 from scipy.stats import linregress
 
 
-def load_data(filepath):
+def load_data(filepath: Path | str) -> dict[str, Any]:
+    """Load spectroscopy observations from a JSON file.
+
+    :param filepath: Path to the JSON data file.
+    :returns: Parsed JSON content.
+    """
     with open(filepath, 'r') as f:
         return json.load(f)
 
 
-def calibrate_zero_angle(d_nm, ref_wavelength_nm, measured_angle_deg, start_angle_deg, order=1):
+def calibrate_zero_angle(
+        d_nm: float,
+        ref_wavelength_nm: float,
+        measured_angle_deg: float,
+        start_angle_deg: float,
+        order: int = 1,
+) -> float:
     """
     Calculates the true zero angle of the rotating stage using a reference wavelength.
+
+    :param d_nm: The grating constant in nanometers.
+    :param ref_wavelength_nm: Reference wavelength used for calibration in
+        nanometers.
+    :param measured_angle_deg: Measured angle for the reference wavelength in
+        degrees.
+    :param start_angle_deg: Initial recorded stage angle in degrees.
+    :param order: Diffraction order (default = 1).
+    :returns: Calibrated zero-angle position in degrees.
     """
     # Calculate theoretical diffraction angle for the reference wavelength
     theta_ref_rad = np.arcsin((order * ref_wavelength_nm) / d_nm)
-    theta_ref_deg = np.degrees(theta_ref_rad)
+    theta_ref_deg = float(np.degrees(theta_ref_rad))
 
     # Determine true zero angle based on which side of the central max it was measured
     if measured_angle_deg > start_angle_deg:
@@ -24,18 +45,40 @@ def calibrate_zero_angle(d_nm, ref_wavelength_nm, measured_angle_deg, start_angl
     else:
         true_zero_angle = measured_angle_deg + theta_ref_deg
 
-    return true_zero_angle
+    return float(true_zero_angle)
 
 
-def calculate_wavelength(d_nm, angle_degrees, true_zero_angle_degrees, order=1):
+def calculate_wavelength(
+    d_nm: float,
+    angle_degrees: float,
+    true_zero_angle_degrees: float,
+    order: int = 1,
+) -> float:
     """
     Calculates wavelength using the calibrated zero angle.
+
+    :param d_nm: The grating constant in nanometers.
+    :param angle_degrees: Measured diffraction angle in degrees.
+    :param true_zero_angle_degrees: Calibrated zero-angle position in degrees.
+    :param order: Diffraction order (default = 1).
+    :returns: Calculated wavelength in nanometers.
     """
     theta_rad = np.radians(np.abs(angle_degrees - true_zero_angle_degrees))
-    return (d_nm * np.sin(theta_rad)) / order
+    return float((d_nm * np.sin(theta_rad)) / order)
 
 
-def analyze_rydberg_constant(x_vals, y_vals, out_path):
+def analyze_rydberg_constant(
+    x_vals: Sequence[float],
+    y_vals: Sequence[float],
+    out_path: Path,
+) -> None:
+    """Fit the Balmer relation and save a regression plot.
+
+    :param x_vals: Balmer-series term values ``(1/2^2 - 1/n^2)``.
+    :param y_vals: Inverse wavelengths in ``nm^-1``.
+    :param out_path: Output directory for generated figures.
+    :returns: None.
+    """
     # Linear regression: 1/lambda = R * (1/4 - 1/n^2)
     slope, intercept, r_value, p_value, std_err = linregress(x_vals, y_vals)
 
@@ -70,7 +113,13 @@ def analyze_rydberg_constant(x_vals, y_vals, out_path):
     print(f"Saved regression plot to {plot_path}")
 
 
-def perform_calibration(observations, d_nominal_nm):
+def perform_calibration(observations: dict[str, Any], d_nominal_nm: float) -> float:
+    """Compute stage zero-angle from the sodium reference line.
+
+    :param observations: Observation data grouped by gas name.
+    :param d_nominal_nm: Nominal grating spacing in nanometers.
+    :returns: Calibrated zero angle in degrees.
+    """
     print(f"--- Calibration ---")
     na_data = observations['Sodium']
     na_start = na_data['starting_angle']
@@ -91,7 +140,20 @@ def perform_calibration(observations, d_nominal_nm):
     return true_zero_angle
 
 
-def analyze_hydrogen(observations, d_nominal_nm, true_zero_angle, out_path):
+def analyze_hydrogen(
+    observations: dict[str, Any],
+    d_nominal_nm: float,
+    true_zero_angle: float,
+    out_path: Path,
+) -> None:
+    """Analyze hydrogen Balmer lines and estimate the Rydberg constant.
+
+    :param observations: Observation data grouped by gas name.
+    :param d_nominal_nm: Nominal grating spacing in nanometers.
+    :param true_zero_angle: Calibrated zero-angle position in degrees.
+    :param out_path: Output directory for generated plots.
+    :returns: None.
+    """
     print(f"\n--- Hydrogen Analysis (Rydberg Constant) ---")
     h_data = observations['Hydrogen']
 
@@ -123,7 +185,18 @@ def analyze_hydrogen(observations, d_nominal_nm, true_zero_angle, out_path):
     analyze_rydberg_constant(x_vals, y_vals, out_path)
 
 
-def analyze_helium(observations, d_nominal_nm, true_zero_angle):
+def analyze_helium(
+    observations: dict[str, Any],
+    d_nominal_nm: float,
+    true_zero_angle: float,
+) -> None:
+    """Compute wavelengths for measured helium emission lines.
+
+    :param observations: Observation data grouped by gas name.
+    :param d_nominal_nm: Nominal grating spacing in nanometers.
+    :param true_zero_angle: Calibrated zero-angle position in degrees.
+    :returns: None.
+    """
     print(f"\n--- Helium Analysis ---")
     he_data = observations['Helium']
 
@@ -136,7 +209,18 @@ def analyze_helium(observations, d_nominal_nm, true_zero_angle):
         print(f"Color: {color:7} | Measured Angle={measured_angle:6.1f}° | True Angle={true_angle:3.1f}° | Wavelength={wl:6.2f} nm")
 
 
-def analyze_unknown_e(observations, d_nominal_nm, true_zero_angle):
+def analyze_unknown_e(
+    observations: dict[str, Any],
+    d_nominal_nm: float,
+    true_zero_angle: float,
+) -> None:
+    """Compute wavelengths for measured lines of the unknown gas sample.
+
+    :param observations: Observation data grouped by gas name.
+    :param d_nominal_nm: Nominal grating spacing in nanometers.
+    :param true_zero_angle: Calibrated zero-angle position in degrees.
+    :returns: None.
+    """
     print(f"\n--- Unknown_E Analysis ---")
     unk_data = observations['Unknown_E']
 
@@ -149,7 +233,11 @@ def analyze_unknown_e(observations, d_nominal_nm, true_zero_angle):
         print(f"Color: {color:10} | Measured Angle={measured_angle:6.1f}° | True Angle={true_angle:3.1f}° | Wavelength={wl:6.2f} nm")
 
 
-def main():
+def main() -> None:
+    """Run calibration and spectroscopy analysis pipeline.
+
+    :returns: None.
+    """
     data_path = Path(__file__).parent.parent / "data" / "spectrum.json"
     out_path = Path(__file__).parent.parent / "out"
     out_path.mkdir(exist_ok=True, parents=True)

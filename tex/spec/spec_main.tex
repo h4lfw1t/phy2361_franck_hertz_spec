@@ -50,7 +50,75 @@
 
     \section{Introduction}\label{sec:introduction}
 
+        Spectroscopy deals with the analysis of materials or gases by
+        measurements of their absorption, reflection, or emission spectra.
+        In this experiment, a grating spectrometer apparatus---consisting
+        of a light source, collimator, grating, and telescope---is used to
+        study the emission spectra of low-pressure gases in which atoms are
+        excited by an electrical discharge.
+
+        The primary purpose of this experiment is to explore these atomic and
+        molecular emissions.
+        Firstly, the grating spectrometer is calibrated using the well-known
+        emission doublet of sodium (\ce{Na}), which has two closely spaced
+        lines at \SI{5889.95}{\angstrom} and \SI{5895.92}{\angstrom}.
+        The fundamental principle governing this is the grating equation
+        \begin{equation}
+            m \lambda = d (\sin \theta)
+            \label{eq:grating}
+        \end{equation}
+        where \( d \) represents the grating constant, \( m \) is the order of
+        diffraction, and \( \theta \) is the diffraction angle for a specific
+        wavelength \( \lambda \).
+        Next, utilizing the calibrated spectrometer, the emission lines of
+        a hydrogen source are measured, alongside those of helium, nitrogen,
+        and an unknown gas.
+        These measurements are then compared against established spectral
+        data, and the unknown gas is identified based on its emission
+        characteristics.
+        Lastly, the hydrogen spectrum is analyzed to determine the Rydberg
+        constant, \( R \).
+        This is calculated using the quantized energies of an electron in a
+        Coulomb potential, given by
+        \begin{equation}
+            \frac{1}{\lambda} = R \left( \frac{1}{4} - {1}{n^2} \right)
+        \end{equation}
+        where \( n \) is the principal quantum number of the Balmer series
+        transitions for each observed spectral line.
+
     \section{Methods}\label{sec:methods}
+
+        \subsection*{Experimental Setup}
+        The experimental setup consists of a collimator, a diffraction
+        grating (600 lines/mm), and a telescope mounted on a rotating stage.
+        A discharge tube is placed at the focal point of the collimator to
+        serve as the light source.
+        The light passes through the collimator to create a parallel beam,
+        strikes the diffraction grating, and is then observed through the
+        rotating telescope, allowing for the measurement of the angles
+        corresponding to different spectral lines.
+
+        \subsection*{Data Collection}
+        The spectrometer is first calibrated using a sodium lamp, where
+        a reference initial angle is recorded with the telescope approximately
+        normal to the grating.
+        The angles for the first-order diffraction lines are measured, and the
+        corresponding wavelengths are calculated using the grating equation.
+        The calculated wavelengths are then compared to the known values to
+        determine whether the starting angle is accurate or if an adjustment
+        is necessary.
+
+        After calibration, the sodium lamp is replaced with discharge tubes
+        containing hydrogen, helium, nitrogen, and an unknown gas (referred to
+        as Unknown E).
+        For each gas, the telescope is swept across the viewing field to
+        locate the visible emission lines, and the corresponding angles are
+        recorded.
+
+        \subsection*{Data Analysis}
+        The raw angular data is processed using a Python script that automates
+        the calibration, wavelength calculation, and determination of the
+        Rydberg constant for hydrogen.
 
     \section{Raw Data}\label{sec:data}
 
@@ -62,7 +130,7 @@
         \hline
         \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Spectral Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
         Sodium & 295.0 & Doublet (Na) & 313.66 \\ \hline
-        Hydrogen & 295.0 & Magenta & 293.0 \\
+        Hydrogen & 295.0 & Violet & 293.0 \\
          & & Blue & 277.5 \\
          & & Cyan & 276.6 \\
          & & Red & 269.0 \\ \hline
