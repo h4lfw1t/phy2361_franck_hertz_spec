@@ -6,6 +6,7 @@
 
 % Packages
 \usepackage{amsmath}
+\usepackage{booktabs}
 \usepackage{caption}
 \usepackage{float}
 \usepackage{graphicx}
@@ -81,7 +82,8 @@
         This is calculated using the quantized energies of an electron in a
         Coulomb potential, given by
         \begin{equation}
-            \frac{1}{\lambda} = R \left( \frac{1}{4} - {1}{n^2} \right)
+            \frac{1}{\lambda} = R \left( \frac{1}{4} - \frac{1}{n^2} \right)
+            \label{eq:rydberg}
         \end{equation}
         where \( n \) is the principal quantum number of the Balmer series
         transitions for each observed spectral line.
@@ -116,43 +118,133 @@
         recorded.
 
         \subsection*{Data Analysis}
-        The raw angular data is processed using a Python script that automates
-        the calibration, wavelength calculation, and determination of the
-        Rydberg constant for hydrogen.
+        The raw angular data is processed using a Python
+        script~\ref{lst:spectroscopy_analysis} that automates the calibration,
+        wavelength calculation, and determination of the Rydberg constant for
+        hydrogen.
+
+        The script first calculates the theoretical diffraction angle for the
+        sodium reference, \( \theta_{\text{ref}} \), using
+        Equation~\ref{eq:grating} rearranged for a first-order (\( m = 1 \))
+        diffraction:
+        \[
+            \theta_{\text{ref}} = \arcsin\left( \frac{\lambda_{\text{Na}}}{d} \right)
+        \]
+        where \( d \) is the nominal grating constant (calculated from the 600
+        lines/mm specification) and \( \lambda_{\text{Na}} \) is the average
+        wavelength of the sodium.
+        The wavelength \( \lambda_{\text{Na}} \) is taken as an average since
+        the two lines are very close together, and the primitive
+        spectrometer's resolution may not distinguish them clearly.
+        The true zero angle of the spectrometer is then determined by
+        offsetting the experimentally measured sodium angle by
+        \( \theta_{\text{ref}}\), depending on which side of the central
+        maximum the measurement was taken.
+
+        For every subsequent emission line observed in the hydrogen, helium,
+        nitrogen, and unknown gas, the absolute angle of diffraction,
+        \( \theta \), is found by taking the absolute difference between the
+        measured angle and the calculated zero angle.
+        The emission wavelength, \( \lambda \), is then computed using the
+        calibrated angle:
+        \[
+            \lambda = d \sin(\theta)
+        \]
+
+        The hydrogen spectrum is isolated to calculate the
+        experimental Rydberg constant, \( R \).
+        The script associates the observed colors of the Balmer series with
+        their corresponding principal quantum numbers: Red (\( n=3 \)), Cyan
+        (\( n=4 \)), Blue (\( n=5 \)), and Violet (\( n=6 \)).
+        Using Equation~\ref{eq:rydberg}, a linear regression is performed,
+        plotting \( \frac{1}{\lambda} \) against
+        \( \left( \frac{1}{4} - \frac{1}{n^2} \right) \) to extract the value
+        of \( R \) from the slope.
+        Finally, the script calculates the percent error by comparing this
+        experimental slope to the theoretical Rydberg constant,
+        \( R_{\text{theoretical}} = \SI{1.097373e7}{\per\meter} \) and
+        generates a regression plot of the results.
+
+        \lstinputlisting[language=Python,caption={Python script for analyzing emission spectra and determining experimental Rydberg constants},label={lst:spectroscopy_analysis}]{../../src/spectroscopy_analysis.py}
 
     \section{Raw Data}\label{sec:data}
 
-    \begin{table}[h!]
-        \centering
-        \caption{Spectral Emission Observations for Various Gases}
-        \label{tab:spectral_observations}
-        \begin{tabular}{lccc}
-        \hline
-        \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Spectral Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
-        Sodium & 295.0 & Doublet (Na) & 313.66 \\ \hline
-        Hydrogen & 295.0 & Violet & 293.0 \\
-         & & Blue & 277.5 \\
-         & & Cyan & 276.6 \\
-         & & Red & 269.0 \\ \hline
-        Helium & 295.0 & Purple & 277.0 \\
-         & & Cyan & 276.0 \\
-         & & Green & 275.3 \\
-         & & Yellow & 275.0 \\
-         & & Orange & 271.6 \\
-         & & Red & 268.6 \\ \hline
-        Nitrogen & 295.0 & Distinct & 293.0 \\
-         & & Blue lines (max) & 278.6 \\
-         & & Blue lines (min) & 276.0 \\ \hline
-        Unknown E & 295.0 & Blue 1 \& 2 & 277.6 \\
-         & & Blue 3 & 277.3 \\
-         & & Blue 4 \& 5 & 277.0 \\
-         & & Green & 273.0 \\
-         & & Orange & 271.6 \\
-         & & Red & 269.0 \\ \hline
-        \end{tabular}
-    \end{table}
+        The raw data collected from the spectrometer for each gas is
+        summarized in Table~\ref{tab:spectral_observations}.
+        Each entry includes the gas type, the base angle at which the gas was
+        observed, the color of the spectral line, and the corresponding
+        observation angle.
+
+        \begin{table}[H]
+            \centering
+            \caption{Spectral Emission Observations for Various Gases}
+            \label{tab:spectral_observations}
+            \begin{tabular}{lccc}
+            \hline
+            \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Spectral Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
+            Sodium & 295.0 & Doublet (Na) & 313.66 \\ \hline
+            Hydrogen & 295.0 & Violet & 293.0 \\
+             & & Blue & 277.5 \\
+             & & Cyan & 276.6 \\
+             & & Red & 269.0 \\ \hline
+            Helium & 295.0 & Purple & 277.0 \\
+             & & Cyan & 276.0 \\
+             & & Green & 275.3 \\
+             & & Yellow & 275.0 \\
+             & & Orange & 271.6 \\
+             & & Red & 268.6 \\ \hline
+            Nitrogen & 295.0 & Distinct & 293.0 \\
+             & & Blue lines (max) & 278.6 \\
+             & & Blue lines (min) & 276.0 \\ \hline
+            Unknown E & 295.0 & Blue 1 \& 2 & 277.6 \\
+             & & Blue 3 & 277.3 \\
+             & & Blue 4 \& 5 & 277.0 \\
+             & & Green & 273.0 \\
+             & & Orange & 271.6 \\
+             & & Red & 269.0 \\ \hline
+            \end{tabular}
+        \end{table}
 
     \section{Analysis and Results}\label{sec:analysis}
+
+        The calibration of the spectrometer using the sodium doublet yielded a
+        true zero angle of \SI{292.95 \pm 0.17}{\degree}, compared to the
+        recorded starting angle of \SI{295.00 \pm 0.17}{\degree}.
+        This resulted in a zero-angle error of \SI{2.05 \pm 0.24}{\degree}.
+        The nominal grating constant \( d \), was calculated to be
+        \SI{1667.67}{\nano\meter}.
+        This calibrated zero angle was applied to all subsequent measurements
+        to find the true diffraction angles for the observed spectral lines.
+
+        The observed emission lines for the hydrogen Balmer series are
+        detailed in Table~\ref{tab:hydrogen_emission_lines}.
+        Applying a linear regression to this data, the experimental Rydberg
+        constant was determined to be
+        \( R_{\text{experimental}} = (1.17 \pm 0.14) 10^7\) \si{\per\meter}.
+        The linear fit to extract this experimental constant is plotted in
+        Figure~\ref{fig:rydberg_fit}.
+
+        \begin{table}[htbp]
+            \centering
+            \caption{Measured angles and calculated wavelengths for the Hydrogen emission spectrum.}
+            \label{tab:hydrogen_emission_lines}
+            \begin{tabular}{lcccc}
+                \toprule
+                Color & $n$ & Measured Angle ($^\circ$) & True Angle ($^\circ$) & Wavelength (nm) \\
+                \midrule
+                Blue & 5 & $277.50 \pm 0.17$ & $15.45 \pm 0.24$ & $444 \pm 7$ \\
+                Cyan & 4 & $276.60 \pm 0.17$ & $16.35 \pm 0.24$ & $469 \pm 7$ \\
+                Red  & 3 & $269.00 \pm 0.17$ & $23.95 \pm 0.24$ & $677 \pm 6$ \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.7\textwidth]{../../out/rydberg_regression}
+            \caption{Linear regression to determine the experimental Rydberg constant from the Hydrogen emission lines.}
+            \label{fig:rydberg_fit}
+        \end{figure}
 
     \section{Discussion}\label{sec:discussion}
         Comparing the observed spectral lines to known emission

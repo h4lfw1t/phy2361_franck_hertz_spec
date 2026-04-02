@@ -15,7 +15,8 @@ dependencies = [
     "scipy (>=1.17.1,<2.0.0)",
     "pandas-stubs (>=3.0.0.260204,<4.0.0.0)",
     "scipy-stubs (>=1.17.1.2,<2.0.0.0)",
-    "jupyter (>=1.1.1,<2.0.0)"
+    "jupyter (>=1.1.1,<2.0.0)",
+    "uncertainties (>=3.2.3,<4.0.0)"
 ]
 
 [tool.poetry]
