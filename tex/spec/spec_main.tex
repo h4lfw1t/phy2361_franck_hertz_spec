@@ -51,14 +51,14 @@
 
     \section{Introduction}\label{sec:introduction}
 
-        Spectroscopy deals with the analysis of materials or gases by
+         Spectroscopy deals with the analysis of materials or gases by
         measurements of their absorption, reflection, or emission spectra.
         In this experiment, a grating spectrometer apparatus---consisting
         of a light source, collimator, grating, and telescope---is used to
         study the emission spectra of low-pressure gases in which atoms are
         excited by an electrical discharge.
 
-        The primary purpose of this experiment is to explore these atomic and
+         The primary purpose of this experiment is to explore these atomic and
         molecular emissions.
         Firstly, the grating spectrometer is calibrated using the well-known
         emission doublet of sodium (\ce{Na}), which has two closely spaced
@@ -91,7 +91,7 @@
     \section{Methods}\label{sec:methods}
 
         \subsection*{Experimental Setup}
-        The experimental setup consists of a collimator, a diffraction
+         The experimental setup consists of a collimator, a diffraction
         grating (600 lines/mm), and a telescope mounted on a rotating stage.
         A discharge tube is placed at the focal point of the collimator to
         serve as the light source.
@@ -101,7 +101,7 @@
         corresponding to different spectral lines.
 
         \subsection*{Data Collection}
-        The spectrometer is first calibrated using a sodium lamp, where
+         The spectrometer is first calibrated using a sodium lamp, where
         a reference initial angle is recorded with the telescope approximately
         normal to the grating.
         The angles for the first-order diffraction lines are measured, and the
@@ -110,7 +110,7 @@
         determine whether the starting angle is accurate or if an adjustment
         is necessary.
 
-        After calibration, the sodium lamp is replaced with discharge tubes
+         After calibration, the sodium lamp is replaced with discharge tubes
         containing hydrogen, helium, nitrogen, and an unknown gas (referred to
         as Unknown E).
         For each gas, the telescope is swept across the viewing field to
@@ -118,12 +118,12 @@
         recorded.
 
         \subsection*{Data Analysis}
-        The raw angular data is processed using a Python
+         The raw angular data is processed using a Python
         script~\ref{lst:spectroscopy_analysis} that automates the calibration,
         wavelength calculation, and determination of the Rydberg constant for
         hydrogen.
 
-        The script first calculates the theoretical diffraction angle for the
+         The script first calculates the theoretical diffraction angle for the
         sodium reference, \( \theta_{\text{ref}} \), using
         Equation~\ref{eq:grating} rearranged for a first-order (\( m = 1 \))
         diffraction:
@@ -141,7 +141,7 @@
         \( \theta_{\text{ref}}\), depending on which side of the central
         maximum the measurement was taken.
 
-        For every subsequent emission line observed in the hydrogen, helium,
+         For every subsequent emission line observed in the hydrogen, helium,
         nitrogen, and unknown gas, the absolute angle of diffraction,
         \( \theta \), is found by taking the absolute difference between the
         measured angle and the calculated zero angle.
@@ -151,7 +151,7 @@
             \lambda = d \sin(\theta)
         \]
 
-        The hydrogen spectrum is isolated to calculate the
+         The hydrogen spectrum is isolated to calculate the
         experimental Rydberg constant, \( R \).
         The script associates the observed colors of the Balmer series with
         their corresponding principal quantum numbers: Red (\( n=3 \)), Cyan
@@ -169,7 +169,7 @@
 
     \section{Raw Data}\label{sec:data}
 
-        The raw data collected from the spectrometer for each gas is
+         The raw data collected from the spectrometer for each gas is
         summarized in Table~\ref{tab:spectral_observations}.
         Each entry includes the gas type, the base angle at which the gas was
         observed, the color of the spectral line, and the corresponding
@@ -181,8 +181,8 @@
             \label{tab:spectral_observations}
             \begin{tabular}{lccc}
             \hline
-            \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Spectral Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
-            Sodium & 295.0 & Doublet (Na) & 313.66 \\ \hline
+            \textbf{Gas} & \textbf{Base Angle ($^\circ$)} & \textbf{Line Color} & \textbf{Observation Angle ($^\circ$)} \\ \hline
+            Sodium & 295.0 & Doublet (Na) & 313.6 \\ \hline
             Hydrogen & 295.0 & Violet & 293.0 \\
              & & Blue & 277.5 \\
              & & Cyan & 276.6 \\
@@ -207,20 +207,21 @@
 
     \section{Analysis and Results}\label{sec:analysis}
 
-        The calibration of the spectrometer using the sodium doublet yielded a
-        true zero angle of \SI{292.95 \pm 0.17}{\degree}, compared to the
-        recorded starting angle of \SI{295.00 \pm 0.17}{\degree}.
-        This resulted in a zero-angle error of \SI{2.05 \pm 0.24}{\degree}.
+         The calibration of the spectrometer using the sodium doublet yielded a
+        true zero angle of \SI{293.0 \pm 0.2}{\degree}, compared to the
+        recorded starting angle of \SI{295.0 \pm 0.2}{\degree}.
+        This resulted in a zero-angle error of \SI{2.1 \pm 0.2}{\degree}.
         The nominal grating constant \( d \), was calculated to be
         \SI{1667.67}{\nano\meter}.
         This calibrated zero angle was applied to all subsequent measurements
         to find the true diffraction angles for the observed spectral lines.
 
-        The observed emission lines for the hydrogen Balmer series are
+         The observed emission lines for the hydrogen Balmer series are
         detailed in Table~\ref{tab:hydrogen_emission_lines}.
         Applying a linear regression to this data, the experimental Rydberg
         constant was determined to be
-        \( R_{\text{experimental}} = (1.17 \pm 0.14) 10^7\) \si{\per\meter}.
+        \( R_{\text{experimental}} = (1.2 \pm 0.1) \times 10^7\)
+        \si{\per\meter}.
         The linear fit to extract this experimental constant is plotted in
         Figure~\ref{fig:rydberg_fit}.
 
@@ -232,23 +233,80 @@
                 \toprule
                 Color & $n$ & Measured Angle ($^\circ$) & True Angle ($^\circ$) & Wavelength (nm) \\
                 \midrule
-                Blue & 5 & $277.50 \pm 0.17$ & $15.45 \pm 0.24$ & $444 \pm 7$ \\
-                Cyan & 4 & $276.60 \pm 0.17$ & $16.35 \pm 0.24$ & $469 \pm 7$ \\
-                Red  & 3 & $269.00 \pm 0.17$ & $23.95 \pm 0.24$ & $677 \pm 6$ \\
+                Violet & 6 & $293.0 \pm 0.2$ & $0.1 \pm 0.2$ & $1 \pm 7$ \\
+                Blue & 5 & $277.5 \pm 0.2$ & $15.5 \pm 0.2$ & $444 \pm 7$ \\
+                Cyan & 4 & $276.6 \pm 0.2$ & $16.4 \pm 0.2$ & $469 \pm 7$ \\
+                Red  & 3 & $269.0 \pm 0.2$ & $24.0 \pm 0.2$ & $677 \pm 6$ \\
                 \bottomrule
             \end{tabular}
         \end{table}
 
         \begin{figure}[htbp]
             \centering
-            \includegraphics[width=0.7\textwidth]{../../out/rydberg_regression}
+            \includegraphics[width=0.9\textwidth]{../../out/rydberg_regression}
             \caption{Linear regression to determine the experimental Rydberg constant from the Hydrogen emission lines.}
             \label{fig:rydberg_fit}
         \end{figure}
 
+         Following the hydrogen analysis, the emission spectra for helium and
+        the unknown gas were measured.
+        The respective measured angles corrected true diffraction angles, and
+        computed wavelengths for these gases are presented in
+        Table~\ref{tab:helium_emission_lines} and
+        Table~\ref{tab:unknown_emission_lines}.
+        The emission line for nitrogen were observed but not precisely
+        measured due to their diffuse nature, so they are not included in the
+        tables.
+
+        \begin{table}[htbp]
+            \centering
+            \caption{Measured angles and calculated wavelengths for the Helium emission spectrum.}
+            \label{tab:helium_emission_lines}
+            \begin{tabular}{lccc}
+                \toprule
+                Color & Measured Angle ($^\circ$) & True Angle ($^\circ$) & Wavelength (nm) \\
+                \midrule
+                Purple & $277.0 \pm 0.2$ & $16.0 \pm 0.2$ & $458 \pm 7$ \\
+                Cyan   & $276.0 \pm 0.2$ & $17.0 \pm 0.2$ & $486 \pm 7$ \\
+                Green  & $275.3 \pm 0.2$ & $17.7 \pm 0.2$ & $505 \pm 7$ \\
+                Yellow & $275.0 \pm 0.2$ & $18.0 \pm 0.2$ & $514 \pm 7$ \\
+                Orange & $271.6 \pm 0.2$ & $21.4 \pm 0.2$ & $607 \pm 6$ \\
+                Red    & $268.6 \pm 0.2$ & $24.4 \pm 0.2$ & $687 \pm 6$ \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+        \begin{table}[htbp]
+            \centering
+            \caption{Measured angles and calculated wavelengths for Unknown Gas E.}
+            \label{tab:unknown_emission_lines}
+            \begin{tabular}{lccc}
+                \toprule
+                Color & Measured Angle ($^\circ$) & True Angle ($^\circ$) & Wavelength (nm) \\
+                \midrule
+                Blue 1 \& 2 & $277.6 \pm 0.2$ & $15.4 \pm 0.2$ & $441 \pm 7$ \\
+                Blue 3      & $277.3 \pm 0.2$ & $15.7 \pm 0.2$ & $450 \pm 7$ \\
+                Blue 4 \& 5 & $277.0 \pm 0.2$ & $16.0 \pm 0.2$ & $458 \pm 7$ \\
+                Green       & $273.0 \pm 0.2$ & $20.0 \pm 0.2$ & $569 \pm 6$ \\
+                Orange      & $271.6 \pm 0.2$ & $21.4 \pm 0.2$ & $607 \pm 6$ \\
+                Red         & $269.0 \pm 0.2$ & $24.0 \pm 0.2$ & $677 \pm 6$ \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
     \section{Discussion}\label{sec:discussion}
-        Comparing the observed spectral lines to known emission
-        spectra~\cite{nist_helium}
+
+        \subsection*{Emission Spectra Analysis}
+             Clearly, the values corresponding to the violet emission line of
+            hydrogen are not accurate.
+            The large deviation from the expected wavelength of
+            \SI{410.2}{\nano\meter} suggests an error in the measurement of
+            the angle for this line rather than any systematic error in the
+            calibration, as the other lines are reasonably close to their
+            expected values.
+
+            Comparing the observed spectral lines to known emission
+            spectra~\cite{nist_helium}
 
     \section{Conclusion}\label{sec:conclusion}
 

@@ -14,7 +14,7 @@
     "Hydrogen": {
       "starting_angle": 295.0,
       "lines": [
-        {"color": "Magenta", "angle": 293.0},
+        {"color": "Violet", "angle": 293.0},
         {"color": "Blue", "angle": 277.5},
         {"color": "Cyan", "angle": 276.6},
         {"color": "Red", "angle": 269.0}
