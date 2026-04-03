@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.signal import find_peaks
 import scipy.constants as const
+from uncertainties import ufloat
 
 # Constants
 LAMBDA_M = 253.7e-9
@@ -46,14 +47,19 @@ def calculate_results(peak_voltages: np.ndarray, lambda_m: float) -> None:
     """
     delta_vs = np.diff(peak_voltages)
     avg_delta_v = np.mean(delta_vs)
-    std_delta_v = np.std(delta_vs)
+    std_err_delta_v = np.std(delta_vs, ddof=1) / np.sqrt(len(delta_vs))
 
-    h_exp = (const.e * avg_delta_v * lambda_m) / const.c
-    percent_error = (abs(h_exp - const.h) / const.h) * 100
+    delta_v_u = ufloat(avg_delta_v, std_err_delta_v)
 
-    print(f"Average Voltage Separation (ΔV) = {avg_delta_v:.3f} V ± {std_delta_v:.3f} V")
+    h_exp_u = (const.e * delta_v_u * lambda_m) / const.c
+    h_exp_val = h_exp_u.n
+    h_exp_err = h_exp_u.s
+
+    percent_error = (abs(h_exp_val - const.h) / const.h) * 100
+
+    print(f"Average Voltage Separation (ΔV) = {avg_delta_v:.3f} V ± {std_err_delta_v:.3f} V")
     print(f"Energy of the excited state ≈ {avg_delta_v:.3f} eV")
-    print(f"\nCalculated Planck's Constant (h) = {h_exp:.4e} J·s")
+    print(f"\nCalculated Planck's Constant (h) = {h_exp_val:.4e} ± {h_exp_err:.4e} J·s")
     print(f"Accepted Planck's Constant (h)   = {const.h:.4e} J·s")
     print(f"Percent Error                    = {percent_error:.2f}%")
 
