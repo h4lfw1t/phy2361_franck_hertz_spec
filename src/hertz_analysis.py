@@ -5,6 +5,7 @@ from pathlib import Path
 from scipy.signal import find_peaks
 import scipy.constants as const
 from uncertainties import ufloat
+from typing import Union
 
 # Constants
 LAMBDA_M = 253.7e-9
@@ -14,6 +15,9 @@ V_F = 6.6
 def load_and_preprocess_data(data_path: Path) -> pd.DataFrame:
     """
     Load the Franck-Hertz experiment data and isolate a single sweep.
+
+    :param data_path: Path to the CSV file containing the experimental data.
+    :return: A pandas DataFrame containing the isolated sweep.
     """
     df = pd.read_csv(data_path, header=0, usecols=[0, 1], names=['Time', 'Collector_Signal'])
     df['Signal_Diff'] = df['Collector_Signal'].diff()
@@ -26,6 +30,10 @@ def load_and_preprocess_data(data_path: Path) -> pd.DataFrame:
 def map_time_to_voltage(sweep: pd.DataFrame, v_pp: float) -> pd.DataFrame:
     """
     Map the time axis to an anode voltage axis using a linear assumption.
+
+    :param sweep: DataFrame containing the sweep data.
+    :param v_pp: Peak-to-peak voltage.
+    :return: DataFrame with the mapped anode voltage.
     """
     t_min = sweep['Time'].min()
     t_max = sweep['Time'].max()
@@ -35,6 +43,9 @@ def map_time_to_voltage(sweep: pd.DataFrame, v_pp: float) -> pd.DataFrame:
 def detect_peaks(sweep: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     """
     Detect prominent peaks in the collector signal.
+
+    :param sweep: DataFrame containing the sweep data with mapped anode voltage.
+    :return: A tuple containing an array of peak voltages and an array of peak signals.
     """
     peaks, _ = find_peaks(sweep['Collector_Signal'], prominence=5, distance=3)
     peak_voltages = sweep['Anode_Voltage'].iloc[peaks].values
@@ -44,6 +55,9 @@ def detect_peaks(sweep: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
 def calculate_results(peak_voltages: np.ndarray, lambda_m: float) -> None:
     """
     Calculate and print the physical results including Planck's constant using scipy.constants.
+
+    :param peak_voltages: Array of detected peak voltages.
+    :param lambda_m: Wavelength of the mercury resonance line.
     """
     delta_vs = np.diff(peak_voltages)
     avg_delta_v = np.mean(delta_vs)
@@ -63,9 +77,14 @@ def calculate_results(peak_voltages: np.ndarray, lambda_m: float) -> None:
     print(f"Accepted Planck's Constant (h)   = {const.h:.4e} J·s")
     print(f"Percent Error                    = {percent_error:.2f}%")
 
-def plot_results(sweep: pd.DataFrame, peak_voltages: np.ndarray, peak_signals: np.ndarray, savefig: str) -> None:
+def plot_results(sweep: pd.DataFrame, peak_voltages: np.ndarray, peak_signals: np.ndarray, savefig: Union[str, Path]) -> None:
     """
     Plot the collector signal versus anode voltage with detected peaks highlighted.
+
+    :param sweep: DataFrame containing the sweep data.
+    :param peak_voltages: Array of detected peak voltages.
+    :param peak_signals: Array of detected peak signals.
+    :param savefig: Path to save the generated plot.
     """
     plt.figure(figsize=(10, 6))
     plt.plot(sweep['Anode_Voltage'], sweep['Collector_Signal'], label='Collector Current', color='blue')

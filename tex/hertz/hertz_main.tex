@@ -1,0 +1,166 @@
+%! Author = grays
+%! Date = 4/3/26
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mhchem}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+% Listings settings
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{gray!10},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{gray!50},
+    title=\lstname
+}
+\sisetup{separate-uncertainty=true}
+\DeclareSIUnit\angstrom{\text {Å}}
+
+\addbibresource{references.bib}
+
+\title{Franck-Hertz Experiment}
+\date{April 3, 2026}
+\author{
+    Patrick Geraghty (300349204) \\
+    Evan Champagne (300443446)
+}
+
+% Document
+\begin{document}
+    \maketitle
+
+    \section{Introduction}\label{sec:intro}
+
+    The Franck-Hertz experiment provides the first direct experimental
+    evidence for the quantization of atomic energy levels, confirming
+    theoretical predictions initially made by the Bohr model.
+    By determining the exact energy required to excite a specific atomic
+    transition in mercury, the experimental can be used to calculate an
+    experimental value for Planck's constant, \( h \).
+
+    When free electrons are accelerated through mercury vapour, they undergo
+    collisions with the mercury atoms.
+    If the kinetic energy of an incident electron is less than the energy
+    difference between the atom's ground state and its lowest accessible
+    excited state (\( \Delta E \)), the collisions are perfectly elastic.
+    In this regime, there is no reduction in the electron's kinetic energy.
+    However, if the electron's kinetic energy is greater than or equal to
+    \( \Delta E \), inelastic collisions can occur.
+    During an inelastic collision, the electron transfers a discrete quantum
+    of kinetic energy to the mercury atom, exciting it to a higher energy
+    state, and continues its path with the surplus energy.
+    By observing the energy lost by electrons undergoing these inelastic
+    collisions, the excitation energy \( \Delta E \) of the atom can be
+    accurately measured.
+    This energy difference relates to the accelerating voltage (\( V \)) by
+    \begin{equation}
+        \Delta E = eV
+        \label{eq:energy_diff}
+    \end{equation}
+    where \( e \) is the elementary charge.
+
+    The specific atomic transition measured in this setup corresponds to the
+    excitation of mercury's \( 6s6p^3 P_1 \) state.
+    Unlike lower energy transitions, this specific state decays rapidly back
+    to the ground state by emitting an ultraviolet photon with a wavelength of
+    \( \lambda = 253.7 \) \si{\nano\meter}.
+    Using the measured excitation energy and the known wavelength of the
+    emitted photon, Planck's constant can be derived using the de Broglie
+    relation for photon energy:
+    \begin{equation}
+        \Delta E = hf = \frac{hc}{\lambda}
+        \label{eq:de_broglie_energy}
+    \end{equation}
+    We can then substitute \( \Delta E \) from Equation~\ref{eq:energy_diff}
+    into Equation~\ref{eq:de_broglie_energy} and rearrange to solve for
+    \( h \):
+    \begin{equation}
+        h = \frac{\Delta E \lambda}{c} = \frac{eV \lambda}{c}
+        \label{eq:plancks_constant}
+    \end{equation}
+
+    \section{Methods}\label{sec:methods}
+
+    \subsection*{Experimental Setup}
+    The experimental setup centers around a completely evacuated glass tube
+    containing a drop of mercury, which is enclosed within a thermostatically
+    controlled oven to precisely regulate the mercury vapour pressure.
+    The internal components of the tube operate similarly to a conventional
+    vacuum tube, with a filament, a cathode, a grid-like anode, and a
+    collector.
+    The filament is powered by a 6.3 VAC power supply, which heats the cathode
+    to emit electrons via thermionic emission.
+    These electrons are then accelerated toward the grounded anode by a
+    variable 0--50 V DC power supply.
+    Because the anode is grounded, the filament and cathode are configured to
+    float with respect to ground, which is necessary for the current
+    measurement.
+    A picoammeter, capable of reading currents between \SI{10e-9}{\ampere} and
+    \SI{10e-7}{\ampere}, is connected to measure the fraction of electrons
+    that reach the collector.
+    A \SI{1.5}{\volt} battery is placed between the anode and the collector to
+    provide a fixed negative retarding potential; this ensures that electrons
+    arriving at the anode with less than \SI{1.5}{\electronvolt} of kinetic
+    energy are turned back.
+    The collector connections are completely shielded to prevent externally
+    induced currents, and the battery is carefully insulated from ground to
+    stop the \SI{1.5}{\volt} potential from driving an unwanted leakage
+    current through the sensitive picoammeter.
+    The ambient temperature of the mercury vapour is monitored and adjusted
+    using an OMEGA CN370 temperature controller, which reads data from a
+    thermocouple attached to a metal ring around the glass tube.
+
+    \subsection*{Experimental Procedure}
+    To begin the experiment, the initial temperature on the OMEGA CN370
+    controller is set approximately \SI{5}{\degreeCelsius} below the actual
+    target temperature before turning on the power switch.
+    The optimal operating temperature to observe the maximum number of current
+    peaks is typically established between \SI{150}{\degreeCelsius} and
+    \SI{180}{\degreeCelsius}, and care is taken to ensure the system never
+    exceeds the safety limit of \SI{250}{\degreeCelsius}.
+    Once the temperature stabilizes, the anode voltage is gradually increased
+    from zero while observing the picoammeter, which must display a current in
+    the negative direction.
+    Initially, the accelerating voltage is kept below \SI{20}{\volt} to safely
+    locate the current peaks without overloading the tube.
+    Pushing the voltage too high risks forming a plasma discharge inside the
+    tube.
+    If a plasma discharge occurs, it acts as a low resistance pathway, causing
+    the \SI{1.5}{\volt} battery to drive a large positive current through the
+    picoammeter; should this happen, the procedure requires the anode voltage
+    to be immediately turned down to zero before resuming.
+    By systematically varying the accelerating voltage and recording the
+    corresponding collector current, at least four distinct peaks are
+    identified.
+    This process yields the necessary data to plot the collector current
+    against the anode voltage, allowing for the precise measurement of the
+    voltage separation between successive peaks.
+
+    \subsection*{Data Analysis}
+    The data is collected using an Agilent DSO1012A oscilloscope, which
+    captures the collector current signal as a function of time during a
+    linear voltage sweep of the anode from 0 to \SI{39}{\volt}.
+
+\printbibliography
+
+\end{document}
