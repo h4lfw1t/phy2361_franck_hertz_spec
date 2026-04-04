@@ -14,7 +14,6 @@
 \usepackage{mhchem}
 \usepackage{siunitx}
 \usepackage{xcolor}
-\usepackage[backend=biber,style=ieee]{biblatex}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 % Listings settings
 \lstset{
@@ -36,7 +35,6 @@
 \sisetup{separate-uncertainty=true}
 \DeclareSIUnit\angstrom{\text {Å}}
 
-\addbibresource{references.bib}
 
 \title{Franck-Hertz Experiment}
 \date{April 3, 2026}
@@ -160,7 +158,155 @@
     The data is collected using an Agilent DSO1012A oscilloscope, which
     captures the collector current signal as a function of time during a
     linear voltage sweep of the anode from 0 to \SI{39}{\volt}.
+    The oscilloscope data is then exported to a CSV file, which is processed
+    using Python.
+    Because the data is recorded over a timescale rather than a voltage
+    scale, the Python script, presented in Listing~\ref{lst:hertz_analysis}
+    first converts the time axis to voltage using the known sweep rate of the
+    anode voltage.
+    To find the excitation states, the script scans the signal to identify
+    the precise anode voltage separation (\( \delta V \)) between these
+    adjacent peaks and determines the associated standard error.
+    Finally, it uses this average separation to calculate an experimental
+    value and propagated error for Planck's constant using
+    Equation~\ref{eq:plancks_constant}, and generates an annotated plot of the
+    collector current versus anode voltage to visually verify the results.
 
-\printbibliography
+    \lstinputlisting[language=Python,caption={Python script for analyzing time-voltage oscilloscope data to determine Planck's constant.},label={lst:hertz_analysis}]{../../src/hertz_analysis.py}
+
+    \section{Raw Data}\label{sec:raw_data}
+
+    The raw data collected from the oscilloscope is presented in
+    Figure~\ref{fig:raw_data}.
+    The plot shows the collector current as a function of the anode voltage,
+    with distinct peaks corresponding to the inelastic collisions of electrons
+    with mercury atoms.
+    The voltage separation between these peaks is crucial for determining the
+    excitation energy of the mercury atoms and, subsequently, Planck's
+    constant.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{../../out/raw_data_plot}
+        \caption{
+            Collector current versus anode voltage from the oscilloscope data.
+            The peaks indicate the inelastic collisions of electrons with
+            mercury atoms.
+        }
+        \label{fig:raw_data}
+    \end{figure}
+
+    \section{Analysis and Results}\label{sec:analysis}
+
+    Figure~\ref{fig:franck_hertz} shows the processed data, where the
+    collector current is plotted against the anode voltage.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{../../out/franck_hertz_plot}
+        \caption{
+            Plot of collector current versus anode voltage, showing the
+            distinct peaks corresponding to the excitation of mercury atoms.
+        }
+        \label{fig:franck_hertz}
+    \end{figure}
+
+    The experimental data yielded four distinct local maxima in the collector
+    current as the anode voltage was swept.
+    These peaks occurred at accelerating voltages of approximately
+    \SI{26.26}{\volt}, \SI{30.04}{\volt}, \SI{33.65}{\volt}, and
+    \SI{37.58}{\volt}.
+
+    By taking the differences between adjacent peaks, the average voltage
+    separation was calculated to be \( \Delta V  = 3.77 \pm 0.09\) \si{\volt}.
+    This separation directly corresponds to the discrete kinetic energy lost
+    by an electron during a single inelastic collision with a mercury atom,
+    providing the measured excitation energy \( \Delta E \approx 3.77 \)
+    \si{\electronvolt} of the atom.
+
+    Using this excitation energy and the known emission wavelength of the
+    unexcited state, we can substitute into Equation~\ref{eq:plancks_constant}
+    to arrive at an experimental value for Planck's constant,
+    \( h = \) \SI{5.12 \pm 0.12 e-35}{\joule\second}.
+
+    \section{Discussion}\label{sec:discussion}
+
+    The periodic local maxima observed in the collector current successfully
+    demonstrate the quantization of atomic energy levels.
+    The average voltage separation of \SI{3.77 \pm 0.09}{\volt} indicates that
+    electrons lose a discrete amount of kinetic energy during inelastic
+    collisions with mercury atoms, which corresponds to the excitation energy of
+    the atom.
+
+    However, it is physically significant that the level detected in this
+    apparatus is actually mercury's second exited state, characterized by the
+    atomic structure \( 6s6p^3 P_1 \).
+    There exists a lower energy state (\( 6s6p^3 P_0 \)), but it is not
+    observed in this experiment because it decays via a forbidden transition.
+    Because it cannot rapidly decay via photon emission, this lower state is
+    metastable and possesses a long lifetime within the gas, primarily
+    decaying only through physical collisions with the walls of the tube.
+    Under continuous electron bombardment, the population of this metastable
+    state builds up until the rate of electron collisions that excite it
+    perfectly balances the rate of collisions that de-excite it.
+    Consequently, this lower state plays no role in the average energy balance
+    of the electrons and remains completely undetected by this experimental
+    setup.
+    Instead, the measured \SI{3.77}{\electronvolt} transition corresponds
+    entirely to the \( 6s6p^3 P_1 \) state, which decays rapidly back to the
+    ground state by emitting the \SI{253.7}{\nano\meter} ultraviolet photon,
+    making the atom immediately available to undergo another excitation cycle.
+
+    When compared to the accepted value of Planck's constant,
+    \( h = \) \SI{6.626e-34}{\joule\second}, our experimental value of
+    \( h = \) \SI{5.12 \pm 0.12 e-35}{\joule\second} is significantly lower,
+    with a percent error of approximately 22.7\%.
+    This discrepancy can be attributed to several sources of error in the
+    experiment.
+
+    First, the derivation assumes that the kinetic energy of the electrons is
+    entirely determined by the accelerating voltage.
+    In reality, the electrons are emitted via thermionic emission and possess
+    a small, non-zero initial thermal energy from the heated cathode.
+    This intrinsic thermal spread causes a broadening of the electron energy
+    distribution, making the current drops less sharply defined and shifting
+    the apparent position of the peaks.
+
+    Secondly, the experimental value of the anode voltage at the peaks is
+    influenced by the work functions of the distinct metals used for the
+    cathode and anode.
+    While taking the voltage difference between successive peaks -- rather
+    than absolute values -- largely mitigates this contact potential
+    difference, any localized variations in the grid's geometry or
+    surface potentials can still introduce systematic shifts in the
+    peak-to-peak distances.
+
+    Finally, the inherent probability cross-sections of the collisions
+    themselves contribute to the error.
+    An electron does not necessarily undergo an inelastic collision the exact
+    moment its kinetic energy reaches \SI{3.77}{\electronvolt}; it must
+    physically encounter an available mercury atom.
+    This means electrons often travel slightly further and gain kinetic energy
+    slightly above the exact threshold before a collision actually occurs,
+    smearing the distances between the theoretical and observed peaks.
+
+    \section{Conclusion}\label{sec:conclusion}
+
+    The Franck-Hertz experiment successfully demonstrated the quantization of
+    atomic energy levels by measuring the discrete energy lost by electrons
+    through mercury vapour.
+    The average voltage separation between collector current peaks was
+    measured at \( \delta V = \) \SI{3.77 \pm 0.09}{\volt}, corresponding to
+    an excitation energy of roughly \SI{3.77}{\electronvolt} for mercury's
+    \( 6s6p^3 P_1 \) state.
+
+    Applying the de Broglie relation to this measured excitation energy
+    yielded an experimental value for Planck's constant of \( h = \)
+    \SI{5.12 \pm 0.12 e-35}{\joule\second}.
+    While this calculation carries a 22.7\% error compared to the accepted
+    value --- primarily due to the thermal energy spread of the emitted
+    electrons and contact potential differences between the electrodes --- the
+    observation of uniform, discrete energy transfers rigorously confirms the
+    theoretical prediction of quantized atomic energy states.
 
 \end{document}

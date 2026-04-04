@@ -71,10 +71,10 @@ def calculate_results(peak_voltages: np.ndarray, lambda_m: float) -> None:
 
     percent_error = (abs(h_exp_val - const.h) / const.h) * 100
 
-    print(f"Average Voltage Separation (ΔV) = {avg_delta_v:.3f} V ± {std_err_delta_v:.3f} V")
-    print(f"Energy of the excited state ≈ {avg_delta_v:.3f} eV")
-    print(f"\nCalculated Planck's Constant (h) = {h_exp_val:.4e} ± {h_exp_err:.4e} J·s")
-    print(f"Accepted Planck's Constant (h)   = {const.h:.4e} J·s")
+    print(f"Average Voltage Separation (dV) = {avg_delta_v:.3f} V +/ {std_err_delta_v:.3f} V")
+    print(f"Energy of the excited state ~= {avg_delta_v:.3f} eV")
+    print(f"\nCalculated Planck's Constant (h) = {h_exp_val:.4e} +/- {h_exp_err:.4e} J * s")
+    print(f"Accepted Planck's Constant (h)   = {const.h:.4e} J * s")
     print(f"Percent Error                    = {percent_error:.2f}%")
 
 def plot_results(sweep: pd.DataFrame, peak_voltages: np.ndarray, peak_signals: np.ndarray, savefig: Union[str, Path]) -> None:
@@ -99,6 +99,24 @@ def plot_results(sweep: pd.DataFrame, peak_voltages: np.ndarray, peak_signals: n
     plt.savefig(savefig, bbox_inches='tight', dpi=300)
     plt.show()
 
+def plot_raw_data(df: pd.DataFrame, savefig: Union[str, Path]) -> None:
+    """
+    Plot the raw collector signal versus time.
+    
+    :param df: DataFrame containing the raw experimental data.
+    :param savefig: Path to save the generated plot.
+    """
+    plt.figure(figsize=(10, 6))
+    plt.plot(df['Time'], df['Collector_Signal'], label='Raw Collector Signal', color='green')
+    plt.title('Franck-Hertz Experiment: Raw Collector Signal vs. Time', fontsize=14)
+    plt.xlabel('Time (s)', fontsize=12)
+    plt.ylabel('Collector Signal (Relative)', fontsize=12)
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(savefig, bbox_inches='tight', dpi=300)
+    plt.show()
+
 def main() -> None:
     """
     Main execution function for Franck-Hertz data analysis.
@@ -106,6 +124,9 @@ def main() -> None:
     data_path = Path(__file__).parent.parent / "data" / "franck_hertz_data.csv"
     out_path = Path(__file__).parent.parent / "out"
     out_path.mkdir(exist_ok=True, parents=True)
+
+    raw_data = pd.read_csv(data_path, header=0, usecols=[0, 1], names=['Time', 'Collector_Signal'])
+    plot_raw_data(raw_data, savefig=out_path / "raw_data_plot.png")
 
     sweep = load_and_preprocess_data(data_path)
     sweep = map_time_to_voltage(sweep, V_PP)
